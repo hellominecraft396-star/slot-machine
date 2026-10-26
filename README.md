@@ -60,6 +60,15 @@ Open `http://localhost:3000` to interact with the full web applet.
 - **Retrigger Mechanics**: Landing 3x Bells during Free Spins awards an additional **+5 Free Spins**!
 - **Victory Tally Outro**: An arcade summary modal tallies the total bonus earnings and deposits them directly into your credit balance.
 
+### 🎯 Daily Mission System & Grand All-Clear Vault
+- **Rotating Daily Missions**: Generates three balanced daily challenges across three tiers (Easy, Medium, Hard):
+  - *Symbol Combos*: Hit Cherry combinations, Triple BAR lines, or 3x Scatter Bells.
+  - *Spin Milestones*: Complete spin volume goals (10 to 25 spins).
+  - *Stake Challenges*: Spin at MAX bet (100G) or build win streaks.
+- **Manual Claim Button & Fanfare**: When completed, players manually click the glowing "CLAIM" button, triggering Web Audio victory fanfare chimes, flying coin animations, and immediate credit deposits.
+- **All-Clear Bonus Vault (+500G)**: Claiming all three daily missions unlocks the grand All-Clear reward vault (+500G bonus).
+- **Persistent State & Refresh**: Automatically resets at midnight or via the in-game "REFRESH MISSIONS" affordance.
+
 ### 🔥 Spin & Win Streaks
 - Tracks consecutive winning rolls in real-time with visual streak multipliers and flame badges.
 

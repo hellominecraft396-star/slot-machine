@@ -99,11 +99,24 @@ export default function App() {
     manager.resetCredits();
   };
 
+  const handleClaimMission = (id: string) => {
+    manager.claimDailyMission(id);
+  };
+
+  const handleClaimAllClear = () => {
+    manager.claimAllClearBonus();
+  };
+
+  const handleRefreshMissions = () => {
+    manager.refreshDailyMissions();
+  };
+
   const isBonusMode = manager.freeSpinsState.isActive;
   const reelsItems = manager.reels.map((r) => r.items);
   const reelsOffsets = manager.reels.map((r) => r.currentOffsetY);
   const stats = manager.achievements.getStats();
   const achievements = manager.achievements.getAchievements();
+  const missionState = manager.dailyMissions.getState();
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen p-2 sm:p-4 scanlines relative select-none">
@@ -163,8 +176,15 @@ export default function App() {
           {/* Collapsible Paytable Multipliers */}
           <PaytableDrawer />
 
-          {/* Collapsible Achievements & Streaks Drawer */}
-          <AchievementsDrawer stats={stats} achievements={achievements} />
+          {/* Collapsible Missions, Achievements & Streaks Drawer */}
+          <AchievementsDrawer
+            stats={stats}
+            achievements={achievements}
+            missionState={missionState}
+            onClaimMission={handleClaimMission}
+            onClaimAllClear={handleClaimAllClear}
+            onRefreshMissions={handleRefreshMissions}
+          />
 
           {/* Bottom Utility Row */}
           <div className="mt-3 flex items-center justify-between px-1 text-[8px] text-purple-400 font-press">

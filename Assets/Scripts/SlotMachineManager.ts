@@ -2,12 +2,14 @@ import { RNGService } from './RNGService';
 import { AudioEngine } from './AudioEngine';
 import { ReelController } from './ReelController';
 import { AchievementService } from './AchievementService';
+import { DailyMissionService } from './DailyMissionService';
 import { BetAmount, FreeSpinsState, SpinResult, SymbolDefinition } from './types';
 
 export class SlotMachineManager {
   public rng: RNGService;
   public audio: AudioEngine;
   public achievements: AchievementService;
+  public dailyMissions: DailyMissionService;
   public reels: [ReelController, ReelController, ReelController];
 
   public credits: number = 1000;
@@ -38,6 +40,7 @@ export class SlotMachineManager {
     this.rng = new RNGService();
     this.audio = AudioEngine.getInstance();
     this.achievements = AchievementService.getInstance();
+    this.dailyMissions = DailyMissionService.getInstance();
     this.reels = [
       new ReelController(0, this.rng),
       new ReelController(1, this.rng),
@@ -81,7 +84,7 @@ export class SlotMachineManager {
     this.onBonusOutroCallback = onBonusOutro;
   }
 
-  private notify(): void {
+  public notify(): void {
     if (this.onStateChangeCallback) {
       this.onStateChangeCallback();
     }
@@ -183,13 +186,28 @@ export class SlotMachineManager {
     this.isStatusWin = evaluation.isWin;
 
     // Track achievements and stats
-    this.achievements.recordSpin(
+    const { newlyUnlocked } = this.achievements.recordSpin(
       activeBet,
       evaluation.isWin,
       evaluation.payout,
       evaluation.winType,
       inBonus
     );
+
+    // Track daily missions
+    const { newlyCompleted } = this.dailyMissions.recordSpin(
+      activeBet,
+      targetSymbols,
+      evaluation.isWin,
+      evaluation.winType,
+      inBonus,
+      this.achievements.getStats().currentStreak
+    );
+
+    if (newlyCompleted.length > 0) {
+      this.statusMessage = `🎯 MISSION COMPLETE: ${newlyCompleted[0].title}! CLAIM IN MISSIONS TAB!`;
+      this.isStatusWin = true;
+    }
 
     if (evaluation.isWin) {
       if (evaluation.winType === 'seven_jackpot') {
@@ -293,6 +311,45 @@ export class SlotMachineManager {
     this.statusMessage = `BONUS COLLECTED! +${collected.toLocaleString()}G ADDED TO CREDITS!`;
     this.isStatusWin = true;
     this.saveState();
+    this.notify();
+  }
+
+  public claimDailyMission(id: string): void {
+    const reward = this.dailyMissions.claimMission(id);
+    if (reward > 0) {
+      this.audio.init();
+      this.audio.playFanfare();
+      this.audio.playWin('bonus');
+      this.spawnCoinShower(false);
+      this.credits += reward;
+      this.statusMessage = `MISSION REWARD CLAIMED! +${reward}G ADDED TO CREDITS! 🪙`;
+      this.isStatusWin = true;
+      this.saveState();
+      this.notify();
+    }
+  }
+
+  public claimAllClearBonus(): void {
+    const reward = this.dailyMissions.claimAllClear();
+    if (reward > 0) {
+      this.audio.init();
+      this.audio.playFanfare();
+      this.audio.playWin('jackpot');
+      this.spawnCoinShower(true);
+      this.credits += reward;
+      this.statusMessage = `🏆 ALL-CLEAR VAULT UNLOCKED! +${reward}G GRAND BOUNTY! 🏆`;
+      this.isStatusWin = true;
+      this.saveState();
+      this.notify();
+    }
+  }
+
+  public refreshDailyMissions(): void {
+    this.dailyMissions.generateMissions();
+    this.audio.init();
+    this.audio.playTick();
+    this.statusMessage = 'NEW DAILY MISSIONS ASSIGNED! GOOD LUCK!';
+    this.isStatusWin = false;
     this.notify();
   }
 

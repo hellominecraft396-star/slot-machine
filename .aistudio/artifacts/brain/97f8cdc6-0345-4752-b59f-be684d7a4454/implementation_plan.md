@@ -1,125 +1,111 @@
-# Retro Pixel Jackpot Slots — Architecture & Implementation Plan
+# Daily Mission System — Architecture & Implementation Plan
 
-A high-fidelity retro arcade slot machine game faithfully matching the provided visual cabinet and prototype specifications, built with clean object-oriented architecture, canvas/WebGL reel rendering, Web Audio chiptune synthesis, free spins bonus mini-game, and player progression systems.
+An interactive daily quest system that challenges players to hit specific symbol combinations, achieve win streaks, and complete bet goals to earn bonus credits, integrated directly into the arcade cabinet's AchievementsDrawer.
 
 ---
 
 ## User Review & Critical Decisions
 
 > [!IMPORTANT]
-> The architectural directions and feature preferences confirmed in Phase 1 and the challenge guidelines:
-> - **Confirmed Audio Behavior**: Full procedural chiptune 8-bit retro sound effects (reel ticks, stopping thuds, win cascades, jackpot fanfares) plus toggleable synthesized arcade background music.
-> - **Confirmed Feature Scope**: 10 Free Spins @ 3X multiplier mini-game (triggered by 3x Scatter Bells with +5 retrigger capability), spin streak multipliers, and an interactive Player Achievements & Stats cabinet.
-> - **Confirmed Payline Mechanics**: Strict single center payline with dashed alignment guides, faithful to classic physical arcade cabinets.
-> - **Project Structure & WebGL Deliverables**: Full project organization with `Assets/Scripts/`, `Assets/Prefabs/`, `Assets/Animations/`, `Assets/UI/`, `Assets/Sounds/`, standalone `/Build/WebGL/` production distribution, and an in-depth `README.md`.
+> The architectural directions and feature preferences confirmed in Phase 1:
+> - **Confirmed Reward Collection**: Manual "CLAIM" button with tactile pixel feedback, Web Audio fanfare chime, and a celebratory flying coin particle shower.
+> - **Confirmed Mission Allocation**: 3 balanced daily missions (Easy, Medium, Hard) plus an "ALL-CLEAR" grand bonus vault (+500G) when all 3 are completed and claimed.
+> - **Confirmed Objective Variety**: Combination of symbol hits (e.g. 2x/3x Cherries, 3x BARs, 3x Bells/Scatters), spin milestones, and bet level requirements.
+> - **Daily Reset & Persistence**: Automatically tracks current day timestamp in `localStorage`, generates fresh daily assignments, and offers a manual "NEW MISSIONS" refresh affordance for instant testing.
 
 ---
 
 ## 1. Overview & Core Concept
 
-- **What It Does**: Simulates a classic late-80s neon casino slot cabinet with three mechanical reels, physical pull lever, weighted PRNG Mersenne-Twister-style distribution, and celebratory lighting states. Players bet game credits across a strict center payline, trigger 3x Scatter Free Spins with 3X multipliers, build hot streaks, and unlock arcade trophies.
-- **Target Audience**: Arcade enthusiasts, retro gaming fans, and evaluators looking for a production-grade slot machine with clean decoupled code architecture.
-- **Key Value**: Delivers 60fps reel animations, zero external asset dependencies (all pixel graphics and Web Audio synthesizers are embedded and standalone), and a complete OOP simulation model.
+- **What It Does**: Introduces a rotating trio of daily bounty missions giving players recurring goals beyond standard spins. Players track real-time progress on every reel stop, claim tiered credit rewards upon completion, and unlock an All-Clear bounty.
+- **Where It Lives**: Seamlessly integrated into `AchievementsDrawer.tsx` with a dual-tab toggle (`[MISSIONS] (3)` | `[TROPHIES] (8)`) and quick notifications in the drawer header when rewards are ready to claim.
 
 ---
 
 ## 2. User Experience & Visual Design
 
 ### Key User Flows
-1. **Coin-In & Bet Selection**: The player views credits (starts at 1,000G), selects bet stakes (10G, 50G, 100G, or MAX), and activates optional Auto-Spin or sets Audio preferences.
-2. **Reel Spin & Mechanical Feedback**: The player clicks the big glowing **SPIN!** button or clicks/drags the animated **Mechanical Lever**. The three reels spin with staggered decelerations and physical spring-back bouncing.
-3. **Win Evaluation & Win Celebrations**:
-   - Matching 3 Sevens: Awards progressive **JACKPOT** (100x pool) with golden marquee flashes and flying coin particle showers.
-   - Matching 3 BARs: Awards 40x BIG WIN with cyan laser glows.
-   - Matching 2 Cherries: Awards 3x consolation prize.
-   - Matching 3 Scatter Bells: Activates the **FREE SPINS BONUS MINI-GAME** modal.
-4. **Free Spins Bonus Round**:
-   - Cabinet transforms dynamically into a glowing crimson-and-gold bonus cabinet with pulsing LED headers.
-   - 10 Free Spins play at 0 credit cost with all payouts multiplied by 3X.
-   - Landing 3 Bells during free spins adds +5 Retrigger spins.
-   - Outro Victory Tally modal summarizes total bonus earnings and collects winnings into player credits.
-5. **Progression & Achievements**: An expandable panel tracks Spin Streaks, Win Streaks, Highest Multiplier, and unlocks 8 pixel-art achievement badges.
+1. **Mission Discovery**: Player opens the "TROPHIES & MISSIONS" drawer. A glowing notification badge alerts them if missions are in progress or ready to claim.
+2. **Real-Time Progress Tracking**:
+   - As reels stop, progress bars and counters update in real time (e.g. `Cherries Hit: 2/3`, `Spins: 12/15`).
+3. **Reward Claiming**:
+   - When a mission target is reached, the status changes to a glowing animated button: `"CLAIM +250G"`.
+   - Clicking triggers the Web Audio fanfare, spawns celebratory gold coins across the viewport, adds credits to the player's balance, and updates the digital LED meters.
+4. **All-Clear Bonus**:
+   - Once all three missions are claimed, the golden "ALL-CLEAR BONUS VAULT" unlocks, granting an extra +500G bounty.
 
-### Visual Identity & Theme
-- **Color Palette**: Deep cosmic purple chassis (`#13092C`, `#1E113A`), high-voltage neon gold (`#FFB703`, `#F59E0B`), electric cyan (`#06B6D4`), and royal purple borders (`#3A2578`, `#4B338F`). Bonus mode triggers a molten ruby-gold gradient shift (`#5B1029` to `#2B0B3A`).
-- **Typography**: Authentic arcade font pairing with Google Fonts `'Press Start 2P'` (display headers, badges, button labels) and `'VT323'` (high-legibility digital LED meters and readouts).
-- **CRT Scanlines & Pixel Perfection**: Crisp pixelated image rendering, phosphor CRT scanlines overlay, and neon drop-shadow glows (`glow-gold`, `glow-purple`, `glow-bonus`).
+### Visual Styling
+- Matching the retro cabinet theme with `#1A0E38` card backgrounds, gold border accents, animated progress bars, and pixel icons.
+- Single-line controls, tabular VT323 numbers, and WCAG AA contrast.
 
 ---
 
-## 3. Key Product Decisions & Trade-Offs
-
-- **Decision 1: Web Audio Procedural Chiptune Synthesizer**
-  - *Chosen Approach*: Pure Web Audio API oscillators (triangle, square, sawtooth, noise) for reel clicks, thuds, win arpeggios, coin drops, lever releases, and melodic 8-bit background loops.
-  - *Why*: Eliminates 100% of external audio loading delays, network failures, or cross-origin audio blocks while delivering authentic 8-bit sound.
-- **Decision 2: Standalone WebGL / Canvas Simulation with Decoupled Unity-Style OOP**
-  - *Chosen Approach*: Clean Object-Oriented architecture mirroring Unity C# game design (ReelController, RNGService, AudioManager, SlotMachineManager, AchievementManager) driving a performant HTML5 Canvas / CSS3 hardware-accelerated tape renderer.
-  - *Why*: Provides immediate zero-friction web preview while offering organized Unity-style folders (`Assets/Scripts`, `Assets/UI`, `Assets/Sounds`, `Build/WebGL`) matching the assignment criteria.
-- **Decision 3: Local Storage Persistence & Reset**
-  - *Chosen Approach*: Automatically save credits, statistics, streaks, and unlocked achievements to `localStorage`, with an in-game "Reset Coins" button to restore the bankroll.
-
----
-
-## 4. Technical Architecture & Data Strategy
+## 3. Technical Architecture & Data Strategy
 
 ### System Component Architecture
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                        App.tsx (Main Stage)                            │
+│                        SlotMachineManager                              │
 │                                                                        │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Marquee Header: Game Title, Fair RNG Badge, Audio Mute Toggle    │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Digital LED Meters: Credits (1,000G) | Winner | Progressive Pot   │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Free Spins HUD (Bonus Active): Spins Left | 3X Mult | Bonus Won  │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Reels Cabinet Stage (Win Line Guide & 3 Staggered Reel Strips)    │  │
-│  │   [Reel 0]          [Reel 1]          [Reel 2]                   │  │
-│  │   (Spring-back deceleration curves, Mersenne RNG target)         │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Control Panel: Bet Buttons (10G/50G/100G/MAX) | Auto | Spin | Arm│  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Interactive Drawers: Paytable Multipliers | Achievements Vault   │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────┬──────────────────────────────────────┘
-                                  │
-      ┌───────────────────────────┼───────────────────────────┐
-      ▼                           ▼                           ▼
-┌──────────────┐          ┌──────────────┐            ┌──────────────┐
-│  RNG Engine  │          │ Audio Synth  │            │ Persistence  │
-│ (PRNG pool & │          │ (Oscillator  │            │ (Credits,    │
-│  weights)    │          │  SFX & BGM)  │            │  Trophies)   │
-└──────────────┘          └──────────────┘            └──────────────┘
+│   ┌───────────────────────┐             ┌──────────────────────────┐   │
+│   │   AchievementService  │             │   DailyMissionService    │   │
+│   │   - 8 Lifetime Trophies             │   - 3 Daily Missions     │   │
+│   │   - Streaks & Stats   │             │   - Daily Date & Refresh │   │
+│   └───────────┬───────────┘             └────────────┬─────────────┘   │
+└───────────────┼──────────────────────────────────────┼─────────────────┘
+                │                                      │
+                ▼                                      ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                   AchievementsDrawer.tsx                               │
+│                                                                        │
+│   ┌────────────────────────────────────────────────────────────────┐   │
+│   │ Sub-Tabs: [ DAILY MISSIONS (3) ]   |   [ ARCADE TROPHIES (8) ] │   │
+│   └────────────────────────────────────────────────────────────────┘   │
+│   ┌────────────────────────────────────────────────────────────────┐   │
+│   │ Mission 1 (Easy): Hit Cherries (2/3)      [ CLAIM +150G ]      │   │
+│   │ Mission 2 (Medium): 3x BAR or 15 Spins    [ CLAIM +300G ]      │   │
+│   │ Mission 3 (Hard): Trigger Free Spins      [ CLAIM +600G ]      │   │
+│   │ All-Clear Bonus Vault (+500G)                                  │   │
+│   └────────────────────────────────────────────────────────────────┘   │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Folder Structure & Asset Layout
-- `/Assets/Scripts/`:
-  - `SlotMachineManager.ts`: Master state machine orchestrating spins, bets, and payouts.
-  - `ReelController.ts`: Physics easing, tape rendering, and stop deceleration curves.
-  - `AudioEngine.ts`: Web Audio API sound synthesizers (reel clicks, wins, lever, BGM loop).
-  - `RNGService.ts`: Weighted symbol RNG generation and payout calculation.
-  - `AchievementService.ts`: Streak calculation, metrics, and achievement unlocking.
-  - `types.ts`: Game states, symbols, payouts, and achievement schemas.
-- `/Assets/UI/`: Modals for Bonus Round Intro, Bonus Round Victory Outro, Rules Dialog, and Paytable components.
-- `/Assets/Sounds/`: Procedural sound profiles and configuration.
-- `/Build/WebGL/`: Standalone index and bundle for running offline or in WebGL game containers.
-- `/README.md`: In-depth documentation covering game overview, running instructions, bonus mechanics, and architecture.
+### Data Schema (`Assets/Scripts/types.ts`)
+```typescript
+export interface DailyMission {
+  id: string;
+  title: string;
+  description: string;
+  targetType: 'symbol_cherry' | 'symbol_bar' | 'free_spins' | 'spin_count' | 'max_bet';
+  target: number;
+  progress: number;
+  reward: number;
+  completed: boolean;
+  claimed: boolean;
+  icon: string;
+}
+
+export interface DailyMissionState {
+  date: string;
+  missions: DailyMission[];
+  allClearClaimed: boolean;
+  allClearReward: number;
+}
+```
 
 ---
 
-## 5. Implementation Sequence (Git Commit Milestones)
+## 4. Implementation Steps
 
-1. **Commit 1: Architecture & Project Structure**: Initialize folder organization (`Assets/Scripts`, `Assets/UI`, `Assets/Sounds`, `Assets/Prefabs`), TypeScript definitions, and static assets.
-2. **Commit 2: RNG & Slot Engine Model**: Implement Mersenne PRNG, weighted probability distribution, payout evaluation, and credit state management.
-3. **Commit 3: Reel Rendering & Mechanical Physics**: Build 3-reel viewport with smooth deceleration curves, spring bounce animation, and interactive pull lever.
-4. **Commit 4: Web Audio 8-Bit Chiptune & BGM Synthesizer**: Create procedural sound synthesizer for spins, stops, wins, jackpots, and toggleable retro arcade background music.
-5. **Commit 5: Free Spins Bonus Mini-Game & Visual Transformations**: Add 10 Free Spins 3X multiplier mode, glowing cabinet transformation, re-trigger system, and intro/outro victory modals.
-6. **Commit 6: Progression, Streaks & Achievements Drawer**: Add spin streaks, win streaks, and 8-badge achievement cabinet with local persistence.
-7. **Commit 7: WebGL Build & Documentation**: Generate standalone `/Build/WebGL/` distribution and comprehensive `README.md`.
+1. **Step 1: Types & DailyMissionService**:
+   - Define `DailyMission` interface and create `DailyMissionService.ts` managing daily seeds, mission pools, progress tracking, and reward claims.
+2. **Step 2: Slot Machine Manager Hookup**:
+   - Wire spin outcomes into `DailyMissionService.recordSpin()` so symbol hits, bet levels, and free spin activations advance mission counters.
+   - Expose `claimMission(id)` and `claimAllClear()` methods that trigger coin showers and audio fanfares.
+3. **Step 3: Update AchievementsDrawer**:
+   - Add segmented tab control (`DAILY MISSIONS` vs `ARCADE TROPHIES`) with claim indicators, real-time progress bars, claim buttons, and all-clear vault banner.
+4. **Step 4: WebGL Build Sync & Documentation**:
+   - Update `README.md` and commit changes with descriptive git milestones.
+5. **Step 5: Verification**:
+   - Run `compile_applet` and `lint_applet` to verify clean build and type safety.

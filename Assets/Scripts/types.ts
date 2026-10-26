@@ -55,3 +55,32 @@ export interface Achievement {
   progress: number;
   target: number;
 }
+
+export type MissionTargetType =
+  | 'cherry_hits'
+  | 'bar_hits'
+  | 'free_spins'
+  | 'spin_count'
+  | 'max_bets'
+  | 'win_streak';
+
+export interface DailyMission {
+  id: string;
+  tier: 'easy' | 'medium' | 'hard';
+  title: string;
+  description: string;
+  icon: string;
+  targetType: MissionTargetType;
+  target: number;
+  progress: number;
+  reward: number;
+  completed: boolean;
+  claimed: boolean;
+}
+
+export interface DailyMissionState {
+  date: string;
+  missions: DailyMission[];
+  allClearClaimed: boolean;
+  allClearReward: number;
+}
