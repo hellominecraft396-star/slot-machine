@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Retro Pixel Jackpot Slots</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=VT323&amp;display=swap" rel="stylesheet"/>
+<style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      background: radial-gradient(circle at 50% 20%, #1e113a 0%, #0d061c 60%, #05020a 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAS7uXPs9YEab2XcG6kT-1Cic-RwybNsDxoJkChdNVTfNA0Wy4W9rrSHtlfhk-_CoErEJCA-znZuDgvQ4mycEYgYQGxqLvwBiivy9u1XoH5aCx9w9HndYXlCC29CCEYWDGnXF8STWt21H5J_joas3ZqQydyYGHC0gzEHal4kmfUak9Fx9131e3lQuaoBNjxr2H1lsvNFDwuzYlEE3BTGwpaI_iY1K3b9Ry1tny2RhaYar2Jwni8-nFp35Pv4CEwwTmkvSo') center/cover no-repeat fixed;
+      font-family: 'Press Start 2P', monospace;
+      overflow-x: hidden;
+      min-height: 100vh;
+      color: #fff;
+    }
+    .font-vt {
+      font-family: 'VT323', monospace;
+    }
+    .pixelated {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    /* Neon glow effects */
+    .glow-gold {
+      text-shadow: 0 0 8px #f59e0b, 0 0 20px #d97706, 0 0 35px #b45309;
+    }
+    .glow-purple {
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.4), inset 0 0 15px rgba(139, 92, 246, 0.2);
+    }
+    .glow-cyan {
+      text-shadow: 0 0 8px #06b6d4, 0 0 15px #0891b2;
+    }
+    .glow-bonus {
+      text-shadow: 0 0 10px #ec4899, 0 0 25px #a855f7, 0 0 40px #e11d48;
+      animation: bonusMarqueeGlow 1s ease-in-out infinite alternate;
+    }
+    @keyframes bonusMarqueeGlow {
+      from { text-shadow: 0 0 8px #f59e0b, 0 0 20px #ef4444; }
+      to { text-shadow: 0 0 18px #facc15, 0 0 35px #fbbf24, 0 0 50px #ec4899; }
+    }
+    .led-border {
+      border: 3px solid #f59e0b;
+      box-shadow: 0 0 10px #f59e0b, inset 0 0 8px rgba(245, 158, 11, 0.5);
+    }
+
+    /* Bonus mode theme active */
+    .bonus-mode-cabinet {
+      border-color: #f59e0b !important;
+      box-shadow: 0 0 35px rgba(245, 158, 11, 0.4), inset 0 0 20px rgba(245, 158, 11, 0.2) !important;
+    }
+    .bonus-header {
+      background: linear-gradient(180deg, #5b1029 0%, #2b0b3a 100%) !important;
+      border-color: #f59e0b !important;
+      animation: pulseGoldBorder 0.8s infinite alternate;
+    }
+    @keyframes pulseGoldBorder {
+      from { border-color: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+      to { border-color: #ef4444; box-shadow: 0 0 24px #f43f5e, inset 0 0 10px #f59e0b; }
+    }
+
+    /* Reel viewport styling */
+    .reel-window {
+      height: 160px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(180deg, #b8d4e4 0%, #e2f1f8 50%, #b8d4e4 100%);
+      box-shadow: inset 0 12px 16px rgba(10, 15, 35, 0.6), inset 0 -12px 16px rgba(10, 15, 35, 0.6);
+      border-radius: 4px;
+    }
+    .reel-window.bonus-reels {
+      background: linear-gradient(180deg, #fce7f3 0%, #fef3c7 50%, #fce7f3 100%);
+      box-shadow: inset 0 12px 16px rgba(112, 26, 117, 0.7), inset 0 -12px 16px rgba(112, 26, 117, 0.7);
+    }
+    .reel-tape {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.1s linear;
+      will-change: transform;
+    }
+    .symbol-box {
+      width: 76px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .symbol-box img {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+    .scatter-badge {
+      position: absolute;
+      bottom: 4px;
+      background: #dc2626;
+      color: #fff;
+      font-size: 7px;
+      font-weight: 900;
+      padding: 1px 4px;
+      border-radius: 3px;
+      border: 1px solid #fef08a;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 6px #ef4444;
+    }
+    .win-line-indicator {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 80px;
+      transform: translateY(-50%);
+      border-top: 2px dashed rgba(239, 68, 68, 0.7);
+      border-bottom: 2px dashed rgba(239, 68, 68, 0.7);
+      background: rgba(254, 240, 138, 0.12);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .bonus-winline {
+      border-top-color: #f59e0b !important;
+      border-bottom-color: #f59e0b !important;
+      background: rgba(245, 158, 11, 0.22) !important;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+    }
+
+    /* Arm pull animation */
+    .lever-pulled {
+      animation: pullLever 0.6s ease-in-out;
+    }
+    @keyframes pullLever {
+      0% { transform: scaleY(1); }
+      40% { transform: scaleY(0.4) translateY(60px); }
+      70% { transform: scaleY(0.7) translateY(25px); }
+      100% { transform: scaleY(1) translateY(0); }
+    }
+
+    /* Win Banner Celebration */
+    @keyframes flashGold {
+      0%, 100% { filter: brightness(1) drop-shadow(0 0 10px #f59e0b); }
+      50% { filter: brightness(1.6) drop-shadow(0 0 25px #fbbf24); }
+    }
+    .jackpot-active {
+      animation: flashGold 0.4s infinite;
+    }
+    .coin-particle {
+      position: absolute;
+      pointer-events: none;
+      font-size: 22px;
+      animation: flyCoin 1.2s forwards cubic-bezier(0.1, 0.8, 0.3, 1);
+      z-index: 120;
+    }
+    @keyframes flyCoin {
+      0% { opacity: 1; transform: translate(0, 0) scale(0.6); }
+      50% { transform: translate(var(--tw-dx), -90px) scale(1.4); }
+      100% { opacity: 0; transform: translate(var(--tw-dx2), 140px) scale(0.8); }
+    }
+
+    /* Retro CRT scanlines */
+    .scanlines::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 30;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-start min-h-screen p-2 sm:p-4 scanlines relative select-none">
+<!-- Main Cabinet Container -->
+<div class="w-full max-w-sm flex flex-col items-center relative z-20">
+<!-- Top Marquee / Status Header -->
+<header class="w-full bg-[#181135] border-4 border-[#ffb703] rounded-t-2xl p-3 shadow-2xl relative overflow-hidden text-center mb-1 transition-all" id="marqueeHeader">
+<div class="absolute inset-0 bg-gradient-to-b from-[#2a1b5c] to-[#120a2a] opacity-80" id="headerBgGlow"></div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="flex items-center justify-between w-full px-2 mb-1">
+<span class="text-[9px] text-amber-400 tracking-wider" id="marqueeTag">RETRO ARCADE</span>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-red-500 animate-ping" id="fairPing"></span>
+<span class="text-[8px] text-emerald-400" id="fairStatus">FAIR RNG VERIFIED</span>
+</div>
+</div>
+<h1 class="text-xl sm:text-2xl font-black text-[#ffb703] tracking-widest glow-gold py-1" id="marqueeText">
+          ★ JACKPOT ★
+        </h1>
+<p class="text-[8px] text-purple-300 font-sans tracking-wide uppercase" id="marqueeSub">Match 3 across center payline to win!</p>
+</div>
+</header>
+<!-- Slot Machine Main Body (Art Backdrop) -->
+<div class="w-full relative bg-[#13092c] border-x-4 border-b-4 border-[#3a2578] rounded-b-2xl p-3 shadow-2xl overflow-hidden transition-all" id="cabinetBody">
+<!-- Upper Meter Display / Credits & Jackpot Amount -->
+<div class="grid grid-cols-3 gap-2 mb-2 bg-[#0a0518] p-2.5 rounded-lg border-2 border-[#4b338f] text-center font-vt transition-all" id="meterContainer">
+<div class="flex flex-col items-center bg-[#150a30] p-1 rounded border border-[#2d1b61]" id="meterCreditBox">
+<span class="text-[12px] text-purple-300 tracking-wider">CREDITS</span>
+<span class="text-2xl text-yellow-400 font-bold leading-tight" id="creditDisplay">1,000</span>
+</div>
+<div class="flex flex-col items-center bg-[#150a30] p-1 rounded border border-[#2d1b61]" id="meterWinBox">
+<span class="text-[12px] text-cyan-300 tracking-wider">WINNER</span>
+<span class="text-2xl text-emerald-400 font-bold leading-tight" id="winDisplay">0</span>
+</div>
+<div class="flex flex-col items-center bg-[#150a30] p-1 rounded border border-[#2d1b61]" id="meterJackpotBox">
+<span class="text-[12px] text-amber-300 tracking-wider" id="jackpotLabel">JACKPOT</span>
+<span class="text-2xl text-amber-400 font-bold leading-tight" id="jackpotAmount">5,000</span>
+</div>
+</div>
+<!-- FREE SPINS HUD BANNER (Visible in Bonus Mode) -->
+<div class="hidden mb-2.5 bg-gradient-to-r from-red-950 via-purple-900 to-amber-950 p-2 rounded-lg border-2 border-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.5)]" id="freeSpinsHud">
+<div class="flex items-center justify-between text-[8px] text-yellow-300 font-mono font-bold mb-1 border-b border-amber-500/40 pb-1">
+<span class="flex items-center gap-1">
+<span class="animate-spin inline-block text-xs">⭐</span> FREE SPINS BONUS ROUND
+          </span>
+<span class="bg-red-600 px-1.5 py-0.5 rounded text-white animate-pulse">FREE PLAY</span>
+</div>
+<div class="grid grid-cols-3 gap-1 font-vt text-center">
+<div class="bg-black/50 p-1 rounded border border-amber-500/40">
+<span class="text-[10px] text-purple-300 block">SPINS LEFT</span>
+<span class="text-xl text-yellow-300 font-bold" id="freeSpinsLeft">10/10</span>
+</div>
+<div class="bg-black/50 p-1 rounded border border-amber-500/40">
+<span class="text-[10px] text-cyan-300 block">MULTIPLIER</span>
+<span class="text-xl text-pink-400 font-bold" id="freeSpinsMult">3X</span>
+</div>
+<div class="bg-black/50 p-1 rounded border border-amber-500/40">
+<span class="text-[10px] text-emerald-300 block">BONUS WON</span>
+<span class="text-xl text-emerald-400 font-bold" id="freeSpinsTotal">0</span>
+</div>
+</div>
+</div>
+<!-- Reels Stage Outer Frame -->
+<div class="relative bg-[#25154d] p-3 rounded-xl border-4 border-[#442c82] shadow-inner transition-colors" id="reelsStage">
+<!-- Win Payline indicator guides -->
+<div class="absolute -left-2 top-1/2 -translate-y-1/2 z-20 flex items-center">
+<div class="w-3 h-5 bg-red-600 rounded-r-md border border-yellow-300 shadow" id="leftIndicator"></div>
+</div>
+<div class="absolute -right-2 top-1/2 -translate-y-1/2 z-20 flex items-center">
+<div class="w-3 h-5 bg-red-600 rounded-l-md border border-yellow-300 shadow" id="rightIndicator"></div>
+</div>
+<!-- 3 Reels Display Grid -->
+<div class="grid grid-cols-3 gap-2 relative bg-[#150f29] p-2 rounded-lg border-2 border-[#120826]">
+<!-- Translucent Center Payline highlight -->
+<div class="win-line-indicator" id="winLineBar"></div>
+<!-- Reel 1 -->
+<div class="reel-window" id="reelBox0">
+<div class="reel-tape" id="tape0">
+<!-- Dynamically populated symbol stack -->
+</div>
+</div>
+<!-- Reel 2 -->
+<div class="reel-window" id="reelBox1">
+<div class="reel-tape" id="tape1">
+<!-- Dynamically populated symbol stack -->
+</div>
+</div>
+<!-- Reel 3 -->
+<div class="reel-window" id="reelBox2">
+<div class="reel-tape" id="tape2">
+<!-- Dynamically populated symbol stack -->
+</div>
+</div>
+</div>
+<!-- Notification Message Bar -->
+<div class="mt-2 text-center py-1.5 px-2 bg-[#090414] rounded border border-[#ffb703] text-[9px] text-yellow-300 font-vt text-lg tracking-wider min-h-[36px] flex items-center justify-center" id="statusBanner">
+          SELECT BET &amp; PRESS SPIN OR PULL LEVER!
+        </div>
+</div>
+<!-- Control Panel / Bets & Spin Buttons -->
+<div class="mt-3 bg-[#1d123d] p-3 rounded-xl border-2 border-[#3b2476]" id="controlPanel">
+<!-- Bet Selector Row -->
+<div class="flex items-center justify-between mb-3" id="betControlRow">
+<span class="text-[9px] text-purple-200">BET LEVEL:</span>
+<div class="flex items-center gap-1.5" id="betSelector">
+<button class="bet-btn px-2.5 py-1 text-[9px] font-bold rounded border-2 border-amber-400 bg-amber-500 text-black shadow active:translate-y-0.5" data-bet="10" onclick="setBet(10)">10G</button>
+<button class="bet-btn px-2.5 py-1 text-[9px] font-bold rounded border-2 border-purple-500 bg-[#28174f] text-purple-200 shadow active:translate-y-0.5" data-bet="50" onclick="setBet(50)">50G</button>
+<button class="bet-btn px-2.5 py-1 text-[9px] font-bold rounded border-2 border-purple-500 bg-[#28174f] text-purple-200 shadow active:translate-y-0.5" data-bet="100" onclick="setBet(100)">100G</button>
+<button class="bet-btn px-2 py-1 text-[9px] font-bold rounded border-2 border-red-500 bg-[#3d1325] text-red-300 shadow active:translate-y-0.5" data-bet="max" onclick="setBet('max')">MAX</button>
+</div>
+</div>
+<!-- Big Action Buttons -->
+<div class="flex items-center gap-2">
+<!-- Quick Auto Spin Button -->
+<button class="flex-1 py-3 px-2 bg-gradient-to-b from-[#3a2072] to-[#201045] border-2 border-[#6942b8] hover:border-purple-300 text-purple-200 rounded-xl text-[9px] font-bold active:scale-95 transition-all text-center" id="autoSpinBtn" onclick="toggleAutoSpin()">
+            AUTO <br/><span class="text-[8px] text-purple-400 font-mono">OFF</span>
+</button>
+<!-- Main Spin Trigger Button -->
+<button class="flex-[2] py-3.5 px-4 bg-gradient-to-b from-[#f59e0b] via-[#d97706] to-[#b45309] border-2 border-yellow-200 rounded-xl text-stone-900 text-sm font-black tracking-widest shadow-[0_4px_0_#78350f] active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2" id="spinBtn" onclick="startSpin()">
+<span id="spinBtnText">SPIN!</span>
+<span class="text-xs" id="spinBtnIcon">🎰</span>
+</button>
+<!-- Interactive Mechanical Lever -->
+<button class="w-14 h-14 bg-[#140b2a] border-2 border-[#5a369e] rounded-xl flex flex-col items-center justify-center active:scale-95 transition hover:border-amber-400 group" id="leverTrigger" onclick="pullLever()" title="Pull Arcade Lever">
+<div class="w-6 h-6 rounded-full bg-gradient-to-br from-red-400 to-red-700 shadow-md border border-red-300" id="leverBall"></div>
+<div class="w-2 h-4 bg-slate-300 rounded-b mt-0.5" id="leverRod"></div>
+<span class="text-[6px] text-purple-300 mt-0.5">PULL</span>
+</button>
+</div>
+</div>
+<!-- Quick Paytable & Odds Drawer Toggle -->
+<div class="mt-3 bg-[#0d071c] p-2 rounded-lg border border-[#2b1954]">
+<div class="flex items-center justify-between cursor-pointer" onclick="togglePaytable()">
+<span class="text-[8px] text-amber-300 font-bold flex items-center gap-1">
+<span>📜</span> PAYTABLE &amp; SYMBOL MULTIPLIERS
+          </span>
+<span class="text-[10px] text-purple-300" id="paytableArrow">▼</span>
+</div>
+<!-- Paytable Detail (Collapsible) -->
+<div class="mt-2 pt-2 border-t border-[#231245] flex flex-col gap-2 text-[8px] text-stone-300 font-sans" id="paytableContent">
+<!-- Highlighted Free Spins Bonus Paytable Card -->
+<div class="bg-gradient-to-r from-red-950 via-[#35104a] to-amber-950 p-2 rounded border border-amber-400/80 flex items-center justify-between shadow-md">
+<div class="flex items-center gap-2">
+<div class="relative">
+<img alt="Scatter Bell" class="w-7 h-7 object-contain pixelated" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPTIPurtFnUOx1gnv9Xw19Chj_XS66zW7_YC5HQ3299pk01DU2URGxXQQ7XmG82YzuLZeKqSMAMKcdIt01M5WPRDglm3CkcG3xC79H_IsBgvG_6mDcFCQusJn6mb3wA6o91XfBnMNzBG2MrfxAnRosSVq35WKdXKNKxV5MDsIs256WwPa0Hqc6_VEtxVK2Zvb15mWoS7T16Vz1WNYdK7D5U-A8IKZ236M7G2la9OcH6zXRt0M5PsnQDzYt8-Su17OZYQQ"/>
+<span class="absolute -bottom-1 -right-1 bg-amber-400 text-black text-[6px] font-bold px-1 rounded">BONUS</span>
+</div>
+<div>
+<p class="font-bold text-amber-300 font-mono text-[9px]">⭐ 3x SCATTER / BONUS</p>
+<p class="text-[7.5px] text-pink-300">10 FREE SPINS @ 3X MULTIPLIER MINI-GAME!</p>
+</div>
+</div>
+<span class="text-[7px] text-amber-200 border border-amber-400/50 bg-black/40 px-1.5 py-1 rounded font-mono">+5 RETRIGGER</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center gap-2 bg-[#170c30] p-1.5 rounded border border-[#301b60]">
+<img alt="Lucky 7" class="w-5 h-5 object-contain pixelated" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgKw5qeBaTuvXWKRRz8jzzCoiTbA0At1ZByFaEvSZS9sb5qxkoUTjxM-jEnq8EZn9L_ySOErhaOT5zFzfTpRVgi9BaDuD26Xg4HfgQDJcn3pks33Aw9RkrVr8owkqh5BLZ3YiFVvgxyDil8_GOoPCkq98UeuNm7GHK45DpOZJ4H8hf3UOh-ZQ7bXMvdWMXkanmxsPA_-VNbrSyW98hUGcKHtLA6Ng7IvWImEqd-kOGoOJ6yI1ORHQrXQzKVdqwEffyVDU"/>
+<div>
+<p class="font-bold text-red-400 font-mono">3x SEVENS</p>
+<p class="text-amber-300">JACKPOT (100x)</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-[#170c30] p-1.5 rounded border border-[#301b60]">
+<img alt="BAR" class="w-5 h-5 object-contain pixelated" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSTwI4Vc2dO0V7mMpLx99b5B9smAb8M2ZzD3iyQU0fDS5qK6BEEj1_mY8Ivs6UlfECWmVZ1IT-JnswkAaC2HvRSxyS8ny2Hb7kjAJzzN6AVZ_ZTWVGVd6wK5lGltpam2hWtj0tbaMCibrx5HPjCFsyqD45sWKaP-mR_HJ9uTzlDuJ3CasYioF8Ji49imUYdqb420fJ9ULOTzpl1TCa08kjnWEVDUwlEPFEA0oNHHBE8YklYz8T9_wyfQFJqiIFRFE-meQ"/>
+<div>
+<p class="font-bold text-cyan-400 font-mono">3x BARS</p>
+<p class="text-amber-300">BIG WIN (40x)</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-[#170c30] p-1.5 rounded border border-[#301b60]">
+<img alt="Bell" class="w-5 h-5 object-contain pixelated" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPTIPurtFnUOx1gnv9Xw19Chj_XS66zW7_YC5HQ3299pk01DU2URGxXQQ7XmG82YzuLZeKqSMAMKcdIt01M5WPRDglm3CkcG3xC79H_IsBgvG_6mDcFCQusJn6mb3wA6o91XfBnMNzBG2MrfxAnRosSVq35WKdXKNKxV5MDsIs256WwPa0Hqc6_VEtxVK2Zvb15mWoS7T16Vz1WNYdK7D5U-A8IKZ236M7G2la9OcH6zXRt0M5PsnQDzYt8-Su17OZYQQ"/>
+<div>
+<p class="font-bold text-yellow-400 font-mono">3x BELLS</p>
+<p class="text-amber-300">FREE SPINS (3x)</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-[#170c30] p-1.5 rounded border border-[#301b60]">
+<img alt="Cherry" class="w-5 h-5 object-contain pixelated" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyfHjnbqysOIAwPYo0Yq3WOuC6Hx6WENqgr_C49vhHd1lBpkNqqeKm2dpe98VF5FGAQjTfyFt0wem7rF672fHZPHoCQaego0KWlStpWg8V3MmKB9X_EjH0o-yyGF3DwWlgmHQKL3O7LJMrIZCAgoy41VQCAaEpEB8am9SPnVpgpKBafTNy7hFD5Akrv9_3RQuSXElk0W1YQRfpRq_69AuhIVhc1PKpf5Ro9o9PwAe4wtuyN8RR9zjUS1e-7KuZFxjALA0"/>
+<div>
+<p class="font-bold text-rose-400 font-mono">3x CHERRIES</p>
+<p class="text-amber-300">BONUS (10x)</p>
+</div>
+</div>
+</div>
+<div class="text-center text-[7px] text-purple-400 pt-0.5">
+            * 2x Matching Cherries pays 3x consolation prize! Retrigger Free Spins with 3x Scatters anytime.
+          </div>
+</div>
+</div>
+<!-- Game Controls / Reset Bankroll -->
+<div class="mt-2 flex items-center justify-between px-1 text-[8px] text-purple-400">
+<button class="hover:text-amber-300 underline underline-offset-2" onclick="resetCredits()">RESET COINS</button>
+<span class="font-mono" id="spinCountText">SPINS: 0</span>
+<button class="hover:text-amber-300 underline underline-offset-2" onclick="triggerHelpModal()">RULES</button>
+</div>
+</div>
+<!-- Retro Footer / Architecture info -->
+<footer class="mt-3 text-center text-[7px] text-purple-400 leading-relaxed font-sans max-w-xs">
+      Unity OOP Architecture Simulated in WebGL Engine.<br/>
+      PRNG Mersenne Twister • Smooth Deceleration Curves.
+    </footer>
+</div>
+<!-- POPUP MODAL 1: Free Spins Trigger Intro Modal -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm hidden" id="bonusIntroModal">
+<div class="relative w-full max-w-sm rounded-2xl overflow-hidden p-6 border-4 border-amber-400 shadow-[0_0_40px_rgba(245,158,11,0.6)] text-center animate-bounce-in" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDtrOpAG08P5bowXwR8jS0kZ8v8e6IW-PBpKkEeET1FOWdC55hAs6T9U4RqNEME158YccPX2r_P97v6c_QTJrsxi-9OGUzWLIFhCXFpR4bmOUVY3dqOt7-hEk-RhfVTQ-GLhzfgEeQH7XcwIGhXx29pJeRAiQ57xCBAbVJYOhdp0D53Kuwewy-Bzz2ZfqPOQtnvUxn8pnp_6GoKN6w4084nMWDo31TI21duzbxgVLfbjPxHdWIZw_gj_r6pGR-N8Y4tLdk'); background-size: 100% 100%; background-repeat: no-repeat;">
+<div class="flex flex-col items-center justify-center relative z-10 py-2">
+<div class="flex items-center gap-2 mb-2 animate-pulse">
+<span class="text-2xl">⭐</span>
+<span class="text-xs text-amber-300 font-bold tracking-widest border border-amber-400 px-2 py-0.5 rounded bg-black/60">BONUS ACTIVATED!</span>
+<span class="text-2xl">⭐</span>
+</div>
+<h2 class="text-xl sm:text-2xl font-black text-yellow-300 glow-gold leading-tight mb-2 tracking-wide">
+          FREE SPINS!
+        </h2>
+<div class="my-3 flex items-center justify-center gap-3">
+<img alt="Bonus Bell" class="w-12 h-12 object-contain pixelated animate-bounce" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPTIPurtFnUOx1gnv9Xw19Chj_XS66zW7_YC5HQ3299pk01DU2URGxXQQ7XmG82YzuLZeKqSMAMKcdIt01M5WPRDglm3CkcG3xC79H_IsBgvG_6mDcFCQusJn6mb3wA6o91XfBnMNzBG2MrfxAnRosSVq35WKdXKNKxV5MDsIs256WwPa0Hqc6_VEtxVK2Zvb15mWoS7T16Vz1WNYdK7D5U-A8IKZ236M7G2la9OcH6zXRt0M5PsnQDzYt8-Su17OZYQQ"/>
+<img alt="Bonus Bell" class="w-14 h-14 object-contain pixelated animate-bounce delay-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPTIPurtFnUOx1gnv9Xw19Chj_XS66zW7_YC5HQ3299pk01DU2URGxXQQ7XmG82YzuLZeKqSMAMKcdIt01M5WPRDglm3CkcG3xC79H_IsBgvG_6mDcFCQusJn6mb3wA6o91XfBnMNzBG2MrfxAnRosSVq35WKdXKNKxV5MDsIs256WwPa0Hqc6_VEtxVK2Zvb15mWoS7T16Vz1WNYdK7D5U-A8IKZ236M7G2la9OcH6zXRt0M5PsnQDzYt8-Su17OZYQQ"/>
+<img alt="Bonus Bell" class="w-12 h-12 object-contain pixelated animate-bounce delay-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPTIPurtFnUOx1gnv9Xw19Chj_XS66zW7_YC5HQ3299pk01DU2URGxXQQ7XmG82YzuLZeKqSMAMKcdIt01M5WPRDglm3CkcG3xC79H_IsBgvG_6mDcFCQusJn6mb3wA6o91XfBnMNzBG2MrfxAnRosSVq35WKdXKNKxV5MDsIs256WwPa0Hqc6_VEtxVK2Zvb15mWoS7T16Vz1WNYdK7D5U-A8IKZ236M7G2la9OcH6zXRt0M5PsnQDzYt8-Su17OZYQQ"/>
+</div>
+<div class="bg-black/70 p-3 rounded-xl border border-amber-500/50 my-2 w-full">
+<p class="text-sm font-bold text-emerald-300 font-vt text-2xl tracking-wider">
+            10 FREE SPINS AWARDED
+          </p>
+<p class="text-[9px] text-pink-300 mt-1 font-mono">
+            ALL WINS MULTIPLIED BY <span class="text-amber-300 text-xs font-black">3X!</span>
+</p>
+<p class="text-[8px] text-purple-300 mt-0.5">COSTS 0 CREDITS PER SPIN</p>
+</div>
+<button class="mt-3 w-full py-3 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-stone-900 font-black rounded-xl text-xs uppercase tracking-wider shadow-[0_4px_0_#b45309] active:translate-y-1 active:shadow-none hover:brightness-110 transition" onclick="startFreeSpinsSession()">
+          START BONUS ROUND! 🎰
+        </button>
+</div>
+</div>
+</div>
+<!-- POPUP MODAL 2: Free Spins Completed Victory Tally Modal -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md hidden" id="bonusOutroModal">
+<div class="relative w-full max-w-sm rounded-2xl overflow-hidden p-6 border-4 border-yellow-300 shadow-[0_0_50px_rgba(250,204,21,0.7)] text-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDtrOpAG08P5bowXwR8jS0kZ8v8e6IW-PBpKkEeET1FOWdC55hAs6T9U4RqNEME158YccPX2r_P97v6c_QTJrsxi-9OGUzWLIFhCXFpR4bmOUVY3dqOt7-hEk-RhfVTQ-GLhzfgEeQH7XcwIGhXx29pJeRAiQ57xCBAbVJYOhdp0D53Kuwewy-Bzz2ZfqPOQtnvUxn8pnp_6GoKN6w4084nMWDo31TI21duzbxgVLfbjPxHdWIZw_gj_r6pGR-N8Y4tLdk'); background-size: 100% 100%; background-repeat: no-repeat;">
+<div class="flex flex-col items-center justify-center relative z-10 py-1">
+<span class="text-3xl mb-1">🏆</span>
+<h2 class="text-lg sm:text-xl font-black text-amber-300 glow-gold leading-tight uppercase">
+          BONUS COMPLETED!
+        </h2>
+<p class="text-[9px] text-purple-200 mt-1 uppercase font-mono">Total Free Spins Played: 10</p>
+<div class="my-3 bg-black/80 p-3.5 rounded-xl border-2 border-amber-400 w-full shadow-inner">
+<span class="text-[10px] text-stone-300 tracking-widest block font-vt text-lg">TOTAL BONUS WON</span>
+<div class="text-3xl sm:text-4xl font-black text-emerald-400 glow-gold font-vt mt-1" id="outroTotalWonText">
+            +0 G
+          </div>
+<span class="text-[8px] text-amber-300 mt-1 block">MULTIPLIER APPLIED: 3X</span>
+</div>
+<button class="w-full py-3.5 bg-gradient-to-r from-emerald-500 via-green-400 to-emerald-600 text-black font-black rounded-xl text-xs uppercase tracking-widest shadow-[0_4px_0_#065f46] active:translate-y-1 active:shadow-none hover:brightness-110 transition flex items-center justify-center gap-2" onclick="collectBonusWinnings()">
+<span>COLLECT WINNINGS</span>
+<span>🪙</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Audio Synthesizer (Zero external dependencies, 8-bit sound fx) -->
+<script>
+    // Web Audio Synthesizer for Retro Arcade Sounds
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      playTick() {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320 + Math.random() * 80, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.04);
+      },
+      playStop() {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.09);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.09);
+      },
+      playWin(tier = 'mid') {
+        if (!this.ctx) return;
+        let notes;
+        if (tier === 'jackpot') {
+          notes = [261, 329, 392, 523, 659, 783, 1046, 1318];
+        } else if (tier === 'bonus') {
+          notes = [440, 554, 659, 880, 1108, 1318, 1760];
+        } else {
+          notes = [330, 392, 523, 659];
+        }
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = tier === 'bonus' ? 'sawtooth' : 'square';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.07);
+          gain.gain.setValueAtTime(tier === 'bonus' ? 0.15 : 0.1, this.ctx.currentTime + idx * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.07 + 0.28);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + idx * 0.07);
+          osc.stop(this.ctx.currentTime + idx * 0.07 + 0.28);
+        });
+      },
+      playFanfare() {
+        if (!this.ctx) return;
+        const chords = [
+          [523.25, 659.25, 783.99],
+          [587.33, 739.99, 880.00],
+          [659.25, 830.61, 987.77],
+          [1046.50, 1318.51, 1567.98]
+        ];
+        chords.forEach((chord, i) => {
+          chord.forEach(freq => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + i * 0.15);
+            gain.gain.setValueAtTime(0.08, this.ctx.currentTime + i * 0.15);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + i * 0.15 + 0.35);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(this.ctx.currentTime + i * 0.15);
+            osc.stop(this.ctx.currentTime + i * 0.15 + 0.35);
+          });
+        });
+      },
+      playLever() {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(450, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.25);
+        gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.25);
+      }
+    };
+
+    /* --- GAME LOGIC & OBJECT ORIENTED MODEL --- */
+
+    // Symbol Registry using uploaded assets with Bells designated as the Bonus/Scatter Trigger
+    const SYMBOLS = [
+      { id: 'seven', name: 'Lucky 7', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCgKw5qeBaTuvXWKRRz8jzzCoiTbA0At1ZByFaEvSZS9sb5qxkoUTjxM-jEnq8EZn9L_ySOErhaOT5zFzfTpRVgi9BaDuD26Xg4HfgQDJcn3pks33Aw9RkrVr8owkqh5BLZ3YiFVvgxyDil8_GOoPCkq98UeuNm7GHK45DpOZJ4H8hf3UOh-ZQ7bXMvdWMXkanmxsPA_-VNbrSyW98hUGcKHtLA6Ng7IvWImEqd-kOGoOJ6yI1ORHQrXQzKVdqwEffyVDU', payout: 100, weight: 10, isScatter: false },
+      { id: 'bar', name: 'Triple BAR', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDSTwI4Vc2dO0V7mMpLx99b5B9smAb8M2ZzD3iyQU0fDS5qK6BEEj1_mY8Ivs6UlfECWmVZ1IT-JnswkAaC2HvRSxyS8ny2Hb7kjAJzzN6AVZ_ZTWVGVd6wK5lGltpam2hWtj0tbaMCibrx5HPjCFsyqD45sWKaP-mR_HJ9uTzlDuJ3CasYioF8Ji49imUYdqb420fJ9ULOTzpl1TCa08kjnWEVDUwlEPFEA0oNHHBE8YklYz8T9_wyfQFJqiIFRFE-meQ', payout: 40, weight: 20, isScatter: false },
+      { id: 'bell', name: 'Golden Bell', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCPTIPurtFnUOx1gnv9Xw19Chj_XS66zW7_YC5HQ3299pk01DU2URGxXQQ7XmG82YzuLZeKqSMAMKcdIt01M5WPRDglm3CkcG3xC79H_IsBgvG_6mDcFCQusJn6mb3wA6o91XfBnMNzBG2MrfxAnRosSVq35WKdXKNKxV5MDsIs256WwPa0Hqc6_VEtxVK2Zvb15mWoS7T16Vz1WNYdK7D5U-A8IKZ236M7G2la9OcH6zXRt0M5PsnQDzYt8-Su17OZYQQ', payout: 25, weight: 26, isScatter: true },
+      { id: 'cherry', name: 'Juicy Cherry', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAyfHjnbqysOIAwPYo0Yq3WOuC6Hx6WENqgr_C49vhHd1lBpkNqqeKm2dpe98VF5FGAQjTfyFt0wem7rF672fHZPHoCQaego0KWlStpWg8V3MmKB9X_EjH0o-yyGF3DwWlgmHQKL3O7LJMrIZCAgoy41VQCAaEpEB8am9SPnVpgpKBafTNy7hFD5Akrv9_3RQuSXElk0W1YQRfpRq_69AuhIVhc1PKpf5Ro9o9PwAe4wtuyN8RR9zjUS1e-7KuZFxjALA0', payout: 10, weight: 36, isScatter: false }
+    ];
+
+    // Build weighted RNG pool
+    const RNG_POOL = [];
+    SYMBOLS.forEach(sym => {
+      for (let i = 0; i < sym.weight; i++) {
+        RNG_POOL.push(sym);
+      }
+    });
+
+    const ITEM_HEIGHT = 80; // Height of each symbol box in pixels
+
+    class Reel {
+      constructor(index, containerEl, tapeEl) {
+        this.index = index;
+        this.containerEl = containerEl;
+        this.tapeEl = tapeEl;
+        this.items = [];
+        this.currentOffset = 0;
+        this.isSpinning = false;
+        this.targetSymbol = null;
+        this.init();
+      }
+
+      init() {
+        this.items = [];
+        for (let i = 0; i < 20; i++) {
+          const randomSym = RNG_POOL[Math.floor(Math.random() * RNG_POOL.length)];
+          this.items.push(randomSym);
+        }
+        this.render();
+        this.currentOffset = -ITEM_HEIGHT * 2;
+        this.tapeEl.style.transform = `translateY(${this.currentOffset}px)`;
+      }
+
+      render() {
+        this.tapeEl.innerHTML = '';
+        this.items.forEach(sym => {
+          const div = document.createElement('div');
+          div.className = 'symbol-box';
+          let scatterBadge = sym.isScatter ? '<span class="scatter-badge">SCATTER</span>' : '';
+          div.innerHTML = `<img src="${sym.img}" alt="${sym.name}" class="pixelated select-none pointer-events-none">${scatterBadge}`;
+          this.tapeEl.appendChild(div);
+        });
+      }
+
+      spin(duration, targetSymbol, onComplete) {
+        this.isSpinning = true;
+        this.targetSymbol = targetSymbol;
+        
+        const extraSymbols = [];
+        const count = 35 + this.index * 12; // staggered reel stop
+        for (let i = 0; i < count; i++) {
+          extraSymbols.push(RNG_POOL[Math.floor(Math.random() * RNG_POOL.length)]);
+        }
+        // Pad target so target sits on center index
+        extraSymbols.push(RNG_POOL[Math.floor(Math.random() * RNG_POOL.length)]); // top neighbor
+        extraSymbols.push(targetSymbol); // exact center winner!
+        extraSymbols.push(RNG_POOL[Math.floor(Math.random() * RNG_POOL.length)]); // bottom neighbor
+        extraSymbols.push(RNG_POOL[Math.floor(Math.random() * RNG_POOL.length)]); // buffer
+
+        this.items = [...this.items.slice(-4), ...extraSymbols];
+        this.render();
+
+        const startTime = performance.now();
+        const startY = 0;
+        const targetIndex = this.items.length - 3; // Center symbol index
+        const endY = -(targetIndex * ITEM_HEIGHT) + 40;
+
+        let lastTickY = 0;
+
+        const animate = (now) => {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          let ease;
+          if (progress < 0.7) {
+            ease = Math.pow(progress / 0.7, 1.2) * 0.7;
+          } else {
+            const t = (progress - 0.7) / 0.3;
+            ease = 0.7 + (1 - Math.pow(1 - t, 3)) * 0.3;
+          }
+
+          const currentY = startY + (endY - startY) * ease;
+          this.tapeEl.style.transform = `translateY(${currentY}px)`;
+
+          if (Math.abs(currentY - lastTickY) > ITEM_HEIGHT) {
+            AudioEngine.playTick();
+            lastTickY = currentY;
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            AudioEngine.playStop();
+            this.currentOffset = endY;
+            this.isSpinning = false;
+            // Bounce effect
+            this.tapeEl.style.transition = 'transform 0.15s ease-out';
+            this.tapeEl.style.transform = `translateY(${endY + 6}px)`;
+            setTimeout(() => {
+              this.tapeEl.style.transform = `translateY(${endY}px)`;
+              setTimeout(() => {
+                this.tapeEl.style.transition = 'none';
+                if (onComplete) onComplete();
+              }, 150);
+            }, 100);
+          }
+        };
+
+        requestAnimationFrame(animate);
+      }
+    }
+
+    // Game Manager State
+    let credits = 1000;
+    let currentBet = 10;
+    let jackpotPool = 5000;
+    let isGameRunning = false;
+    let isAutoSpin = false;
+    let spinCount = 0;
+    let reels = [];
+
+    // FREE SPINS BONUS MINI-GAME STATE
+    let inFreeSpinsMode = false;
+    let freeSpinsTotalCount = 10;
+    let freeSpinsRemaining = 0;
+    let freeSpinsMultiplier = 3;
+    let bonusAccumulator = 0;
+    let freeSpinsTriggerBet = 10;
+
+    // Initialize Game
+    window.addEventListener('DOMContentLoaded', () => {
+      const tape0 = document.getElementById('tape0');
+      const tape1 = document.getElementById('tape1');
+      const tape2 = document.getElementById('tape2');
+
+      reels = [
+        new Reel(0, document.getElementById('reelBox0'), tape0),
+        new Reel(1, document.getElementById('reelBox1'), tape1),
+        new Reel(2, document.getElementById('reelBox2'), tape2)
+      ];
+
+      updateDisplay();
+    });
+
+    function setBet(val) {
+      if (isGameRunning || inFreeSpinsMode) return;
+      AudioEngine.init();
+      AudioEngine.playTick();
+
+      if (val === 'max') {
+        currentBet = 100;
+      } else {
+        currentBet = Number(val);
+      }
+
+      document.querySelectorAll('.bet-btn').forEach(btn => {
+        const b = btn.getAttribute('data-bet');
+        if ((val === 'max' && b === 'max') || (b == currentBet && val !== 'max')) {
+          btn.className = 'bet-btn px-2.5 py-1 text-[9px] font-bold rounded border-2 border-amber-400 bg-amber-500 text-black shadow active:translate-y-0.5';
+        } else {
+          btn.className = 'bet-btn px-2.5 py-1 text-[9px] font-bold rounded border-2 border-purple-500 bg-[#28174f] text-purple-200 shadow active:translate-y-0.5';
+        }
+      });
+      document.getElementById('statusBanner').textContent = `BET SET TO ${currentBet}G`;
+    }
+
+    function pullLever() {
+      if (isGameRunning) return;
+      AudioEngine.init();
+      AudioEngine.playLever();
+      const ball = document.getElementById('leverBall');
+      ball.parentElement.classList.add('lever-pulled');
+      setTimeout(() => {
+        ball.parentElement.classList.remove('lever-pulled');
+      }, 600);
+      startSpin();
+    }
+
+    function toggleAutoSpin() {
+      if (inFreeSpinsMode) return;
+      AudioEngine.init();
+      isAutoSpin = !isAutoSpin;
+      const btn = document.getElementById('autoSpinBtn');
+      if (isAutoSpin) {
+        btn.innerHTML = 'AUTO <br><span class="text-[8px] text-emerald-400 font-mono animate-pulse">ON</span>';
+        btn.classList.add('border-emerald-400');
+        if (!isGameRunning) startSpin();
+      } else {
+        btn.innerHTML = 'AUTO <br><span class="text-[8px] text-purple-400 font-mono">OFF</span>';
+        btn.classList.remove('border-emerald-400');
+      }
+    }
+
+    function startSpin() {
+      if (isGameRunning) return;
+      AudioEngine.init();
+
+      if (!inFreeSpinsMode) {
+        if (credits < currentBet) {
+          document.getElementById('statusBanner').textContent = 'NOT ENOUGH CREDITS! RESETTING...';
+          document.getElementById('statusBanner').classList.add('text-rose-400');
+          if (isAutoSpin) toggleAutoSpin();
+          return;
+        }
+
+        credits -= currentBet;
+        jackpotPool += Math.floor(currentBet * 0.1);
+        spinCount++;
+      } else {
+        // Free Spin execution: Costs 0 Credits!
+        freeSpinsRemaining--;
+        document.getElementById('freeSpinsLeft').textContent = `${freeSpinsRemaining}/${freeSpinsTotalCount}`;
+      }
+
+      isGameRunning = true;
+
+      document.getElementById('spinBtn').disabled = true;
+      document.getElementById('spinBtn').classList.add('opacity-70', 'cursor-not-allowed');
+      
+      const bannerMsg = inFreeSpinsMode 
+        ? `⭐ BONUS SPIN (${freeSpinsTotalCount - freeSpinsRemaining}/${freeSpinsTotalCount}) - 3X MULTIPLIER! ⭐`
+        : 'SPINNING REELS... GOOD LUCK!';
+      document.getElementById('statusBanner').textContent = bannerMsg;
+      document.getElementById('statusBanner').classList.remove('text-rose-400', 'text-emerald-400');
+      document.getElementById('winDisplay').textContent = '0';
+      document.getElementById('marqueeText').classList.remove('jackpot-active');
+
+      updateDisplay();
+
+      // Pseudo-Random Outcomes (RNG Engine)
+      const roll1 = RNG_POOL[Math.floor(Math.random() * RNG_POOL.length)];
+      let roll2, roll3;
+
+      const jackpotRig = Math.random();
+      if (!inFreeSpinsMode && jackpotRig < 0.12) {
+        // Fun boost: 12% chance to land 3x Bells and trigger Free Spins!
+        const bellSym = SYMBOLS.find(s => s.id === 'bell');
+        roll2 = bellSym;
+        roll3 = bellSym;
+        resultsRoll = [bellSym, bellSym, bellSym];
+      } else if (jackpotRig < 0.08) {
+        // Guaranteed triple win
+        roll2 = roll1;
+        roll3 = roll1;
+      } else if (jackpotRig < 0.28) {
+        // Guaranteed double match
+        roll2 = roll1;
+        roll3 = RNG_POOL[Math.floor(Math.random() * RNG_POOL.length)];
+      } else {
+        roll2 = RNG_POOL[Math.floor(Math.random() * RNG_POOL.length)];
+        roll3 = RNG_POOL[Math.floor(Math.random() * RNG_POOL.length)];
+      }
+
+      const results = (jackpotRig < 0.12 && !inFreeSpinsMode) ? [SYMBOLS[2], SYMBOLS[2], SYMBOLS[2]] : [roll1, roll2, roll3];
+      let completedReels = 0;
+
+      reels.forEach((reel, idx) => {
+        const spinTime = 1300 + idx * 420;
+        reel.spin(spinTime, results[idx], () => {
+          completedReels++;
+          if (completedReels === 3) {
+            handleSpinResults(results);
+          }
+        });
+      });
+    }
+
+    function handleSpinResults(outcomes) {
+      isGameRunning = false;
+      document.getElementById('spinBtn').disabled = false;
+      document.getElementById('spinBtn').classList.remove('opacity-70', 'cursor-not-allowed');
+
+      const s0 = outcomes[0];
+      const s1 = outcomes[1];
+      const s2 = outcomes[2];
+
+      const activeBet = inFreeSpinsMode ? freeSpinsTriggerBet : currentBet;
+      let winPayout = 0;
+      let winLabel = '';
+      let isScatterTrigger = false;
+
+      // 1. Check if 3x Bells / Scatters landed (Trigger or Retrigger Free Spins!)
+      if (s0.id === 'bell' && s1.id === 'bell' && s2.id === 'bell') {
+        isScatterTrigger = true;
+        if (!inFreeSpinsMode) {
+          // Trigger Free Spins Mini-Game Mode!
+          winPayout = activeBet * s0.payout;
+          winLabel = `⭐ 3x SCATTERS! 10 FREE SPINS WON! +${winPayout}G ⭐`;
+          AudioEngine.playWin('bonus');
+          triggerCelebration(true);
+          
+          credits += winPayout;
+          document.getElementById('winDisplay').textContent = winPayout.toLocaleString();
+          document.getElementById('statusBanner').textContent = winLabel;
+          document.getElementById('statusBanner').classList.add('text-emerald-400');
+          updateDisplay();
+
+          setTimeout(() => {
+            promptBonusGameIntro(activeBet);
+          }, 1200);
+          return;
+        } else {
+          // Free Spins Retrigger!
+          winPayout = (activeBet * s0.payout) * freeSpinsMultiplier;
+          bonusAccumulator += winPayout;
+          freeSpinsRemaining += 5;
+          freeSpinsTotalCount += 5;
+          document.getElementById('freeSpinsLeft').textContent = `${freeSpinsRemaining}/${freeSpinsTotalCount}`;
+          document.getElementById('freeSpinsTotal').textContent = bonusAccumulator.toLocaleString();
+          winLabel = `🔥 RETRIGGER! +5 FREE SPINS & +${winPayout}G! 🔥`;
+          AudioEngine.playWin('bonus');
+          triggerCelebration(true);
+        }
+      }
+      // 2. Check Other Match 3 combinations
+      else if (s0.id === s1.id && s1.id === s2.id) {
+        if (s0.id === 'seven') {
+          winPayout = jackpotPool * (inFreeSpinsMode ? freeSpinsMultiplier : 1);
+          winLabel = `🔥 MEGA JACKPOT! 7-7-7! +${winPayout}G 🔥`;
+          jackpotPool = 5000;
+          AudioEngine.playWin('jackpot');
+          triggerCelebration(true);
+        } else {
+          const basePayout = activeBet * s0.payout;
+          winPayout = inFreeSpinsMode ? basePayout * freeSpinsMultiplier : basePayout;
+          const multNotice = inFreeSpinsMode ? ` (3X MULTIPLIER!)` : '';
+          winLabel = `★ WINNER! 3x ${s0.name.toUpperCase()}! +${winPayout}G${multNotice} ★`;
+          AudioEngine.playWin('big');
+          triggerCelebration(false);
+        }
+      } 
+      // 3. Check 2 cherries consolation bonus
+      else if ((s0.id === 'cherry' && s1.id === 'cherry') || 
+               (s1.id === 'cherry' && s2.id === 'cherry') ||
+               (s0.id === 'cherry' && s2.id === 'cherry')) {
+        const basePayout = activeBet * 3;
+        winPayout = inFreeSpinsMode ? basePayout * freeSpinsMultiplier : basePayout;
+        winLabel = inFreeSpinsMode 
+          ? `🍒 CHERRY BONUS! +${winPayout}G (3X MULTIPLIER)! 🍒` 
+          : `🍒 CHERRY BONUS! +${winPayout}G 🍒`;
+        AudioEngine.playWin('mid');
+      } else {
+        winLabel = inFreeSpinsMode ? 'NO WIN ON THIS FREE SPIN...' : 'TRY AGAIN! SPIN TO WIN!';
+      }
+
+      if (winPayout > 0) {
+        if (inFreeSpinsMode) {
+          bonusAccumulator += winPayout;
+          document.getElementById('freeSpinsTotal').textContent = bonusAccumulator.toLocaleString();
+          document.getElementById('winDisplay').textContent = winPayout.toLocaleString();
+        } else {
+          credits += winPayout;
+          document.getElementById('winDisplay').textContent = winPayout.toLocaleString();
+        }
+        document.getElementById('statusBanner').textContent = winLabel;
+        document.getElementById('statusBanner').classList.add('text-emerald-400');
+      } else {
+        document.getElementById('statusBanner').textContent = winLabel;
+      }
+
+      updateDisplay();
+
+      // Free Spins Flow Evaluation
+      if (inFreeSpinsMode) {
+        if (freeSpinsRemaining > 0) {
+          setTimeout(() => {
+            if (inFreeSpinsMode && !isGameRunning) {
+              startSpin();
+            }
+          }, 1400);
+        } else {
+          // Free spins completed!
+          setTimeout(() => {
+            concludeFreeSpinsSession();
+          }, 1000);
+        }
+        return;
+      }
+
+      // Loop if Auto Spin is active
+      if (isAutoSpin) {
+        if (credits >= currentBet) {
+          setTimeout(() => {
+            if (isAutoSpin && !isGameRunning) startSpin();
+          }, 1200);
+        } else {
+          toggleAutoSpin();
+        }
+      }
+    }
+
+    // --- FREE SPINS MINI-GAME CONTROLLERS ---
+
+    function promptBonusGameIntro(betLevel) {
+      freeSpinsTriggerBet = betLevel;
+      AudioEngine.playFanfare();
+      const modal = document.getElementById('bonusIntroModal');
+      modal.classList.remove('hidden');
+    }
+
+    function startFreeSpinsSession() {
+      document.getElementById('bonusIntroModal').classList.add('hidden');
+      inFreeSpinsMode = true;
+      freeSpinsTotalCount = 10;
+      freeSpinsRemaining = 10;
+      freeSpinsMultiplier = 3;
+      bonusAccumulator = 0;
+
+      // Apply dynamic Bonus visual theme to machine
+      document.getElementById('cabinetBody').classList.add('bonus-mode-cabinet');
+      document.getElementById('marqueeHeader').classList.add('bonus-header');
+      document.getElementById('marqueeText').innerHTML = '⭐ BONUS ROUND ⭐';
+      document.getElementById('marqueeText').className = 'text-xl sm:text-2xl font-black text-yellow-300 glow-bonus py-1';
+      document.getElementById('marqueeTag').textContent = '★ FREE SPINS MODE ★';
+      document.getElementById('marqueeSub').textContent = '10 FREE SPINS • 3X WIN MULTIPLIER ACTIVE!';
+      
+      // Reveal HUD
+      document.getElementById('freeSpinsHud').classList.remove('hidden');
+      document.getElementById('freeSpinsLeft').textContent = `10/10`;
+      document.getElementById('freeSpinsMult').textContent = `3X`;
+      document.getElementById('freeSpinsTotal').textContent = `0`;
+
+      // Update reels styling
+      document.querySelectorAll('.reel-window').forEach(el => el.classList.add('bonus-reels'));
+      document.getElementById('winLineBar').classList.add('bonus-winline');
+      document.getElementById('spinBtnText').textContent = 'BONUS!';
+      document.getElementById('spinBtnIcon').textContent = '⭐';
+
+      document.getElementById('statusBanner').textContent = 'BONUS ROUND ACTIVATED! COMMENCING 10 FREE SPINS!';
+      
+      // Automatically kick off the first free spin
+      setTimeout(() => {
+        startSpin();
+      }, 800);
+    }
+
+    function concludeFreeSpinsSession() {
+      AudioEngine.playFanfare();
+      document.getElementById('outroTotalWonText').textContent = `+${bonusAccumulator.toLocaleString()} G`;
+      document.getElementById('bonusOutroModal').classList.remove('hidden');
+      triggerCelebration(true);
+    }
+
+    function collectBonusWinnings() {
+      AudioEngine.playWin('jackpot');
+      document.getElementById('bonusOutroModal').classList.add('hidden');
+
+      // Add accumulated coins directly to player credits
+      credits += bonusAccumulator;
+      
+      // Revert visual styling back to classic arcade mode
+      inFreeSpinsMode = false;
+      document.getElementById('cabinetBody').classList.remove('bonus-mode-cabinet');
+      document.getElementById('marqueeHeader').classList.remove('bonus-header');
+      document.getElementById('marqueeText').innerHTML = '★ JACKPOT ★';
+      document.getElementById('marqueeText').className = 'text-xl sm:text-2xl font-black text-[#ffb703] tracking-widest glow-gold py-1';
+      document.getElementById('marqueeTag').textContent = 'RETRO ARCADE';
+      document.getElementById('marqueeSub').textContent = 'Match 3 across center payline to win!';
+      
+      document.getElementById('freeSpinsHud').classList.add('hidden');
+      document.querySelectorAll('.reel-window').forEach(el => el.classList.remove('bonus-reels'));
+      document.getElementById('winLineBar').classList.remove('bonus-winline');
+      document.getElementById('spinBtnText').textContent = 'SPIN!';
+      document.getElementById('spinBtnIcon').textContent = '🎰';
+
+      document.getElementById('statusBanner').textContent = `BONUS COLLECTED! +${bonusAccumulator.toLocaleString()}G ADDED TO CREDITS!`;
+      document.getElementById('statusBanner').classList.add('text-emerald-400');
+      
+      updateDisplay();
+      triggerCelebration(true);
+    }
+
+    function updateDisplay() {
+      document.getElementById('creditDisplay').textContent = credits.toLocaleString();
+      document.getElementById('jackpotAmount').textContent = jackpotPool.toLocaleString();
+      document.getElementById('spinCountText').textContent = `SPINS: ${spinCount}`;
+    }
+
+    function resetCredits() {
+      if (inFreeSpinsMode) return;
+      AudioEngine.init();
+      AudioEngine.playWin('mid');
+      credits = 1000;
+      updateDisplay();
+      document.getElementById('statusBanner').textContent = 'BANKROLL RESTORED TO 1,000G!';
+    }
+
+    function togglePaytable() {
+      const content = document.getElementById('paytableContent');
+      const arrow = document.getElementById('paytableArrow');
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        arrow.textContent = '▼';
+      } else {
+        content.classList.add('hidden');
+        arrow.textContent = '▶';
+      }
+    }
+
+    function triggerCelebration(isJackpot) {
+      const marquee = document.getElementById('marqueeText');
+      marquee.classList.add('jackpot-active');
+      
+      const coins = isJackpot ? 32 : 16;
+      for (let i = 0; i < coins; i++) {
+        const coin = document.createElement('div');
+        coin.className = 'coin-particle';
+        coin.textContent = isJackpot ? '⭐' : '🪙';
+        coin.style.left = `${25 + Math.random() * 50}%`;
+        coin.style.top = '40%';
+        coin.style.setProperty('--tw-dx', `${(Math.random() - 0.5) * 240}px`);
+        coin.style.setProperty('--tw-dx2', `${(Math.random() - 0.5) * 360}px`);
+        document.body.appendChild(coin);
+        setTimeout(() => coin.remove(), 1200);
+      }
+    }
+
+    function triggerHelpModal() {
+      alert("ARCADE SLOTS RULES:\n1. Choose bet: 10G, 50G, 100G.\n2. Spin reels using button or Pull Lever.\n3. Match 3 symbols along center line to win.\n4. 3x SCATTER BELLS triggers 10 FREE SPINS Mini-Game with 3X MULTIPLIER & Retrigger!\n5. 777 wins progressive jackpot!");
+    }
+  </script>
+</body></html>

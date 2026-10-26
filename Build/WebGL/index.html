@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Retro Pixel Jackpot Slots - WebGL Build</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body class="scanlines">
+  <div class="cabinet-container">
+    <!-- Marquee -->
+    <header class="marquee" id="marqueeHeader">
+      <div class="marquee-top">
+        <span class="tag" id="marqueeTag">RETRO ARCADE</span>
+        <div class="status-indicator">
+          <span class="ping-dot"></span>
+          <span class="status-text">FAIR RNG VERIFIED</span>
+        </div>
+      </div>
+      <h1 class="marquee-title" id="marqueeTitle">★ JACKPOT ★</h1>
+      <p class="marquee-sub" id="marqueeSub">Match 3 across center payline to win!</p>
+    </header>
+
+    <!-- Cabinet Body -->
+    <div class="cabinet-body" id="cabinetBody">
+      <!-- Digital Meters -->
+      <div class="meters-grid">
+        <div class="meter-box">
+          <span class="meter-label">CREDITS</span>
+          <span class="meter-value" id="creditDisplay">1,000</span>
+        </div>
+        <div class="meter-box">
+          <span class="meter-label">WINNER</span>
+          <span class="meter-value win-value" id="winDisplay">0</span>
+        </div>
+        <div class="meter-box">
+          <span class="meter-label">JACKPOT</span>
+          <span class="meter-value jackpot-value" id="jackpotDisplay">5,000</span>
+        </div>
+      </div>
+
+      <!-- Free Spins HUD -->
+      <div class="bonus-hud hidden" id="bonusHud">
+        <div class="bonus-hud-title">
+          <span>⭐ FREE SPINS BONUS ROUND</span>
+          <span class="free-badge">FREE PLAY</span>
+        </div>
+        <div class="bonus-hud-grid">
+          <div>SPINS LEFT: <b id="hudSpinsLeft">10/10</b></div>
+          <div>MULTIPLIER: <b id="hudMultiplier">3X</b></div>
+          <div>WON: <b id="hudBonusTotal">0</b></div>
+        </div>
+      </div>
+
+      <!-- Reels Stage (Canvas / WebGL Engine) -->
+      <div class="reels-stage" id="reelsStage">
+        <div class="guide-pin pin-left"></div>
+        <div class="guide-pin pin-right"></div>
+        <div class="payline-guide"></div>
+
+        <div class="reels-grid">
+          <div class="reel-window"><div class="tape" id="tape0"></div></div>
+          <div class="reel-window"><div class="tape" id="tape1"></div></div>
+          <div class="reel-window"><div class="tape" id="tape2"></div></div>
+        </div>
+
+        <div class="status-banner" id="statusBanner">
+          SELECT BET &amp; PRESS SPIN OR PULL LEVER!
+        </div>
+      </div>
+
+      <!-- Control Panel -->
+      <div class="control-panel">
+        <div class="bet-row">
+          <span class="bet-label">BET LEVEL:</span>
+          <div class="bet-buttons">
+            <button class="bet-btn active" data-bet="10">10G</button>
+            <button class="bet-btn" data-bet="50">50G</button>
+            <button class="bet-btn" data-bet="100">100G</button>
+            <button class="bet-btn max-btn" data-bet="max">MAX</button>
+          </div>
+        </div>
+
+        <div class="actions-row">
+          <button class="auto-btn" id="autoBtn">AUTO<br><span>OFF</span></button>
+          <button class="spin-btn" id="spinBtn"><span>SPIN!</span> 🎰</button>
+          <button class="lever-btn" id="leverBtn" title="Pull Mechanical Lever">
+            <div class="lever-knob"></div>
+            <div class="lever-shaft"></div>
+            <span>PULL</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Paytable Card -->
+      <div class="paytable-card">
+        <div class="paytable-title">📜 PAYTABLE MULTIPLIERS</div>
+        <div class="paytable-grid">
+          <div class="pay-item"><span>⭐ 3x SCATTER</span> <b>10 SPINS (3X)</b></div>
+          <div class="pay-item"><span>🍒 3x CHERRIES</span> <b>10X</b></div>
+          <div class="pay-item"><span>🔔 3x BELLS</span> <b>25X</b></div>
+          <div class="pay-item"><span>🎰 3x BARS</span> <b>40X</b></div>
+          <div class="pay-item full-width"><span>👑 3x SEVENS</span> <b>JACKPOT (100X)</b></div>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="bottom-bar">
+        <button id="resetBtn">RESET COINS</button>
+        <span id="spinCounter">SPINS: 0</span>
+        <button id="soundToggleBtn">AUDIO: ON</button>
+      </div>
+    </div>
+
+    <footer class="footer-note">
+      WebGL Build Environment • Mersenne PRNG Engine • Standalone Distribution
+    </footer>
+  </div>
+
+  <!-- Bonus Intro Modal -->
+  <div class="modal hidden" id="bonusIntroModal">
+    <div class="modal-box">
+      <div class="bonus-tag">⭐ BONUS ACTIVATED! ⭐</div>
+      <h2>FREE SPINS!</h2>
+      <div class="bonus-desc">
+        <p>10 FREE SPINS AWARDED</p>
+        <p class="mult-text">ALL WINS MULTIPLIED BY 3X!</p>
+        <p class="free-text">COSTS 0 CREDITS</p>
+      </div>
+      <button class="modal-btn" id="startBonusBtn">START BONUS ROUND! 🎰</button>
+    </div>
+  </div>
+
+  <!-- Bonus Outro Modal -->
+  <div class="modal hidden" id="bonusOutroModal">
+    <div class="modal-box">
+      <h2>🏆 BONUS COMPLETED!</h2>
+      <div class="bonus-desc">
+        <p>TOTAL BONUS WON</p>
+        <div class="won-amount" id="outroTotalWon">+0 G</div>
+      </div>
+      <button class="modal-btn" id="collectBonusBtn">COLLECT WINNINGS 🪙</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

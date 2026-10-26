@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: radial-gradient(circle at 50% 20%, #1e113a 0%, #0d061c 60%, #05020a 100%),
+      url('https://lh3.googleusercontent.com/aida-public/AB6AXuAS7uXPs9YEab2XcG6kT-1Cic-RwybNsDxoJkChdNVTfNA0Wy4W9rrSHtlfhk-_CoErEJCA-znZuDgvQ4mycEYgYQGxqLvwBiivy9u1XoH5aCx9w9HndYXlCC29CCEYWDGnXF8STWt21H5J_joas3ZqQydyYGHC0gzEHal4kmfUak9Fx9131e3lQuaoBNjxr2H1lsvNFDwuzYlEE3BTGwpaI_iY1K3b9Ry1tny2RhaYar2Jwni8-nFp35Pv4CEwwTmkvSo')
+      center/cover no-repeat fixed;
+    font-family: 'Press Start 2P', monospace;
+    min-height: 100vh;
+  }
+}
+
+.font-vt {
+  font-family: 'VT323', monospace;
+}
+
+.font-press {
+  font-family: 'Press Start 2P', monospace;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Neon glow classes */
+.glow-gold {
+  text-shadow: 0 0 8px #f59e0b, 0 0 20px #d97706, 0 0 35px #b45309;
+}
+
+.glow-purple {
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4), inset 0 0 15px rgba(139, 92, 246, 0.2);
+}
+
+.glow-cyan {
+  text-shadow: 0 0 8px #06b6d4, 0 0 15px #0891b2;
+}
+
+.glow-bonus {
+  text-shadow: 0 0 10px #ec4899, 0 0 25px #a855f7, 0 0 40px #e11d48;
+  animation: bonusMarqueeGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes bonusMarqueeGlow {
+  from {
+    text-shadow: 0 0 8px #f59e0b, 0 0 20px #ef4444;
+  }
+  to {
+    text-shadow: 0 0 18px #facc15, 0 0 35px #fbbf24, 0 0 50px #ec4899;
+  }
+}
+
+.bonus-mode-cabinet {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.4), inset 0 0 20px rgba(245, 158, 11, 0.2) !important;
+}
+
+.bonus-header {
+  background: linear-gradient(180deg, #5b1029 0%, #2b0b3a 100%) !important;
+  border-color: #f59e0b !important;
+  animation: pulseGoldBorder 0.8s infinite alternate;
+}
+
+@keyframes pulseGoldBorder {
+  from {
+    border-color: #f59e0b;
+    box-shadow: 0 0 10px #f59e0b;
+  }
+  to {
+    border-color: #ef4444;
+    box-shadow: 0 0 24px #f43f5e, inset 0 0 10px #f59e0b;
+  }
+}
+
+/* CRT Scanlines */
+.scanlines::before {
+  content: ' ';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+/* Coin particles */
+@keyframes flyCoin {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.6);
+  }
+  50% {
+    transform: translate(var(--dx), -90px) scale(1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx2), 140px) scale(0.8);
+  }
+}
+
+.coin-particle {
+  position: fixed;
+  pointer-events: none;
+  font-size: 24px;
+  animation: flyCoin 1.2s forwards cubic-bezier(0.1, 0.8, 0.3, 1);
+  z-index: 100;
+}
+
+/* Mechanical lever animation */
+.lever-pulled {
+  animation: pullLever 0.6s ease-in-out;
+}
+
+@keyframes pullLever {
+  0% {
+    transform: scaleY(1);
+  }
+  40% {
+    transform: scaleY(0.4) translateY(60px);
+  }
+  70% {
+    transform: scaleY(0.7) translateY(25px);
+  }
+  100% {
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+/* Jackpot flashing */
+@keyframes flashGold {
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 10px #f59e0b);
+  }
+  50% {
+    filter: brightness(1.6) drop-shadow(0 0 25px #fbbf24);
+  }
+}
+
+.jackpot-active {
+  animation: flashGold 0.4s infinite;
+}
